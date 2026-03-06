@@ -22,7 +22,7 @@
         (p) => `
           <div class="col-md-4">
             <div class="card-glass glass product-card h-100">
-              <img src="${p.images?.[0] || "https://placehold.co/640x440?text=HALLAYM"}" alt="${p.name}" />
+              <img src="${p.images?.[0] || "https://placehold.co/640x440?text=Qarshi+yoshlar+Texnoparki"}" alt="${p.name}" />
               <div class="pt-3">
                 <span class="chip-lite mb-2">Faol startup</span>
                 <h5>${p.name}</h5>

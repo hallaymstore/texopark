@@ -18,7 +18,7 @@ function formatDate(value) {
 
 function galleryTemplate(item) {
   const images = item.images || [];
-  const cover = images[0] || "https://placehold.co/1000x560?text=HALLAYM+GALLERY";
+  const cover = images[0] || "https://placehold.co/1000x560?text=Qarshi+yoshlar+Texnoparki+Gallery";
 
   return `
     <div class="col-md-6 col-lg-4">

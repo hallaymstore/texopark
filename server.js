@@ -28,7 +28,7 @@ const RUNTIME_DEFAULTS = {
   CLOUDINARY_API_SECRET: "GzOEMTuo7k2bwYQjLqcFXyHOu2A",
   ADMIN_PHONE: "998901234567",
   ADMIN_PASSWORD: "admin123",
-  ADMIN_FIRST_NAME: "HALLAYM",
+  ADMIN_FIRST_NAME: "Qarshi",
   ADMIN_LAST_NAME: "Admin",
   ADMIN_CARD_HOLDER: "Abdurahmon Qoryogdiyev",
   ADMIN_CARD_NUMBER: "5614 6887 0520 2686",
@@ -187,7 +187,7 @@ app.get("/api/health", (_req, res) => {
 
 app.get("/api/payment-config", (_req, res) => {
   res.json({
-    cardHolder: process.env.ADMIN_CARD_HOLDER || "HALLAYM TEXNOPARK",
+    cardHolder: process.env.ADMIN_CARD_HOLDER || "Qarshi yoshlar Texnoparki",
     cardNumber: process.env.ADMIN_CARD_NUMBER || "8600 0000 0000 0000",
     bankName: process.env.ADMIN_BANK_NAME || "Tijorat banki",
   });
@@ -827,5 +827,6 @@ async function start() {
 }
 
 start();
+
 
 

@@ -25,10 +25,11 @@ services:
       - key: ADMIN_LAST_NAME
         value: Admin
       - key: ADMIN_CARD_HOLDER
-        value: HALLAYM TEXNOPARK
+        value: Qarshi yoshlar Texnoparki
       - key: ADMIN_CARD_NUMBER
         sync: false
       - key: ADMIN_BANK_NAME
         value: Tijorat banki
       - key: MONGO_TIMEOUT_MS
         value: "15000"
+

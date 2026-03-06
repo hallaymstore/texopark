@@ -17,7 +17,7 @@ function formatDate(value) {
 }
 
 function postTemplate(post) {
-  const image = post.coverImage || "https://placehold.co/1000x560?text=HALLAYM+BLOG";
+  const image = post.coverImage || "https://placehold.co/1000x560?text=Qarshi+yoshlar+Texnoparki+Blog";
 
   return `
     <div class="col-md-6 col-lg-4">

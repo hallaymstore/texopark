@@ -1,4 +1,4 @@
-# HALLAYM TEXNOPARK
+# Qarshi yoshlar Texnoparki
 
 Node.js + MongoDB (Atlas) asosidagi rasmiy web platforma.
 
@@ -60,3 +60,4 @@ Agar `Could not connect to any servers` yoki `timed out` chiqsa:
 - `ADMIN_PASSWORD`
 
 `ADMIN_PHONE` va `ADMIN_PASSWORD` berilgan bo'lsa, server startda admin user avtomatik yaratiladi (mavjud bo'lmasa).
+

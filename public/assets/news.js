@@ -17,7 +17,7 @@ function formatDate(value) {
 }
 
 function newsCard(item) {
-  const image = item.coverImage || "https://placehold.co/1000x560?text=HALLAYM+NEWS";
+  const image = item.coverImage || "https://placehold.co/1000x560?text=Qarshi+yoshlar+Texnoparki+News";
   return `
     <div class="col-md-6 col-lg-4">
       <article class="card-glass glass h-100 news-card">
