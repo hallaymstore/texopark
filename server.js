@@ -16,6 +16,33 @@ const BlogPost = require("./models/BlogPost");
 const GalleryWork = require("./models/GalleryWork");
 const Preorder = require("./models/Preorder");
 const { requireAuth, requireAdmin } = require("./middleware/auth");
+
+// Temporary runtime defaults: .env bo'lmasa ham server ishga tushishi uchun.
+const RUNTIME_DEFAULTS = {
+  PORT: "5000",
+  MONGODB_URI:
+    "mongodb+srv://abumafia0:abumafia0@abumafia.h1trttg.mongodb.net/texnopark?appName=abumafia",
+  SESSION_SECRET: "change_this_secret",
+  CLOUDINARY_CLOUD_NAME: "dh3heagct",
+  CLOUDINARY_API_KEY: "564992594627199",
+  CLOUDINARY_API_SECRET: "GzOEMTuo7k2bwYQjLqcFXyHOu2A",
+  ADMIN_PHONE: "998901234567",
+  ADMIN_PASSWORD: "admin123",
+  ADMIN_FIRST_NAME: "HALLAYM",
+  ADMIN_LAST_NAME: "Admin",
+  ADMIN_CARD_HOLDER: "Abdurahmon Qoryogdiyev",
+  ADMIN_CARD_NUMBER: "5614 6887 0520 2686",
+  ADMIN_BANK_NAME: "Aloqabank",
+  MONGO_TIMEOUT_MS: "15000",
+};
+
+for (const [key, fallbackValue] of Object.entries(RUNTIME_DEFAULTS)) {
+  const current = String(process.env[key] || "").trim();
+  if (!current) {
+    process.env[key] = fallbackValue;
+  }
+}
+
 const { uploadBuffer } = require("./config/cloudinary");
 
 const app = express();
