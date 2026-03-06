@@ -1,4 +1,4 @@
-﻿require("dotenv").config({ override: true });
+require("dotenv").config({ quiet: true });
 
 const path = require("path");
 const express = require("express");
@@ -22,9 +22,22 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 const MAX_IMAGE_COUNT = 5;
 const MAX_GALLERY_IMAGE_COUNT = 8;
-const MONGODB_URI = String(process.env.MONGODB_URI || "")
-  .trim()
-  .replace(/^['"]|['"]$/g, "");
+const MONGO_TIMEOUT_MS = Number(process.env.MONGO_TIMEOUT_MS || 15000);
+
+function sanitizeEnvValue(value = "") {
+  return String(value).trim().replace(/^['"]|['"]$/g, "");
+}
+
+function resolveMongoUri() {
+  const keys = ["MONGODB_URI", "MONGO_URL", "MONGO_URI", "DATABASE_URL"];
+  for (const key of keys) {
+    const value = sanitizeEnvValue(process.env[key] || "");
+    if (value) return { uri: value, key };
+  }
+  return { uri: "", key: "" };
+}
+
+const { uri: MONGODB_URI, key: MONGODB_KEY } = resolveMongoUri();
 
 const upload = multer({
   storage: multer.memoryStorage(),
@@ -100,7 +113,8 @@ if (MONGODB_URI) {
       collectionName: "sessions",
       ttl: 60 * 60 * 24 * 30,
       mongoOptions: {
-        serverSelectionTimeoutMS: 10000,
+        serverSelectionTimeoutMS: MONGO_TIMEOUT_MS,
+        connectTimeoutMS: MONGO_TIMEOUT_MS,
       },
     });
 
@@ -134,9 +148,9 @@ if (sessionStore) {
   sessionOptions.store = sessionStore;
 }
 
-app.use(
-  session(sessionOptions)
-);
+if (MONGODB_URI) {
+  app.use(session(sessionOptions));
+}
 
 app.use(express.static(path.join(__dirname, "public")));
 
@@ -754,16 +768,20 @@ app.use("/api", (_req, res) => {
 async function start() {
   try {
     if (!MONGODB_URI) {
-      throw new Error("MONGODB_URI .env faylda berilmagan");
+      throw new Error(
+        "Mongo URI topilmadi. Environment ga MONGODB_URI (yoki MONGO_URL / MONGO_URI / DATABASE_URL) kiriting"
+      );
     }
     if (!/^mongodb(\+srv)?:\/\//.test(MONGODB_URI)) {
       throw new Error("MONGODB_URI formati noto'g'ri. Atlas uchun mongodb+srv://... kiriting");
     }
 
     await mongoose.connect(MONGODB_URI, {
-      serverSelectionTimeoutMS: 10000,
+      serverSelectionTimeoutMS: MONGO_TIMEOUT_MS,
+      connectTimeoutMS: MONGO_TIMEOUT_MS,
+      socketTimeoutMS: Math.max(MONGO_TIMEOUT_MS * 2, 30000),
     });
-    console.log("MongoDB connected");
+    console.log(`MongoDB connected (${MONGODB_KEY || "MONGODB_URI"})`);
 
     await ensureAdminUser();
 
@@ -772,9 +790,15 @@ async function start() {
     });
   } catch (error) {
     console.error("startup error:", error.message);
+    if (/timed out|whitelist|could not connect|econnrefused|enotfound|querysrv|socket/i.test(error.message)) {
+      console.error(
+        "Atlas tekshiruv: 1) Cluster Network Access da 0.0.0.0/0 qo'shing, 2) DB user login/parolini tekshiring, 3) URIda db nomi yozilgan bo'lsin"
+      );
+    }
     process.exit(1);
   }
 }
 
 start();
+
 

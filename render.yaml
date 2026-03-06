@@ -1,0 +1,34 @@
+services:
+  - type: web
+    name: texnopark
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: MONGODB_URI
+        sync: false
+      - key: SESSION_SECRET
+        sync: false
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false
+      - key: CLOUDINARY_API_KEY
+        sync: false
+      - key: CLOUDINARY_API_SECRET
+        sync: false
+      - key: ADMIN_PHONE
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: ADMIN_FIRST_NAME
+        value: HALLAYM
+      - key: ADMIN_LAST_NAME
+        value: Admin
+      - key: ADMIN_CARD_HOLDER
+        value: HALLAYM TEXNOPARK
+      - key: ADMIN_CARD_NUMBER
+        sync: false
+      - key: ADMIN_BANK_NAME
+        value: Tijorat banki
+      - key: MONGO_TIMEOUT_MS
+        value: "15000"
