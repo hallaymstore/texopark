@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 220" role="img" aria-label="State Building">
+  <rect width="320" height="220" rx="16" fill="#0a544f"/>
+  <rect x="20" y="170" width="280" height="24" fill="#d9b85f"/>
+  <polygon points="160,34 42,92 278,92" fill="#e7cc7e"/>
+  <rect x="56" y="92" width="208" height="78" fill="#0f6f69" stroke="#e3c26f" stroke-width="4"/>
+  <rect x="148" y="120" width="24" height="50" fill="#e8cf85"/>
+  <rect x="74" y="106" width="16" height="64" fill="#d9b85f"/>
+  <rect x="106" y="106" width="16" height="64" fill="#d9b85f"/>
+  <rect x="198" y="106" width="16" height="64" fill="#d9b85f"/>
+  <rect x="230" y="106" width="16" height="64" fill="#d9b85f"/>
+</svg>

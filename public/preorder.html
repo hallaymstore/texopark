@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="uz">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HALLAYM TEXNOPARK | Oldindan to'lov</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/assets/style.css" />
+  </head>
+  <body>
+    <div class="site-shell">
+      <nav class="navbar navbar-expand-xl glass navbar-glass fade-up">
+        <div class="container-fluid">
+          <a class="navbar-brand d-flex align-items-center gap-2" href="/">
+            <span class="brand-dot"></span>
+            <span>HALLAYM TEXNOPARK</span>
+          </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="mainNav">
+            <ul class="navbar-nav me-auto mb-2 mb-xl-0">
+              <li class="nav-item"><a class="nav-link" href="/home">Bosh sahifa</a></li>
+              <li class="nav-item"><a class="nav-link" href="/products">Loyihalar</a></li>
+              <li class="nav-item"><a class="nav-link" href="/order">Ariza</a></li>
+              <li class="nav-item"><a class="nav-link active" href="/preorder">Oldindan to'lov</a></li>
+              <li class="nav-item"><a class="nav-link" href="/news">Yangiliklar</a></li>
+              <li class="nav-item"><a class="nav-link" href="/blog">Blog</a></li>
+              <li class="nav-item"><a class="nav-link" href="/gallery">Galereya</a></li>
+              <li class="nav-item hidden" data-admin-only><a class="nav-link text-warning" href="/admin">Admin</a></li>
+            </ul>
+            <div class="nav-actions d-flex align-items-center gap-2">
+              <span id="userLabel" class="small muted"></span>
+              <a href="/login" class="btn btn-sm btn-glass hidden" data-guest-only>Kirish</a>
+              <a href="/register" class="btn btn-sm btn-glass hidden" data-guest-only>Ro'yxatdan o'tish</a>
+              <button class="btn btn-sm btn-solid hidden" data-auth-only data-logout-btn>Chiqish</button>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      <section class="hero glass section-gap fade-up">
+        <span class="chip-lite mb-2">Preorder Payment</span>
+        <h1>Oldindan buyurtma va to'lov tasdiqlash</h1>
+        <p>To'lovni admin kartasiga o'tkazib, screenshotni yuklang. Ariza holati adminda tasdiqlanadi.</p>
+      </section>
+
+      <section class="row g-3 section-gap fade-up">
+        <div class="col-lg-5">
+          <div class="card-glass glass h-100">
+            <h5 class="mb-3">To'lov rekvizitlari</h5>
+            <div class="payment-box">
+              <div class="payment-line">
+                <span class="muted">Qabul qiluvchi:</span>
+                <strong id="cardHolder">-</strong>
+              </div>
+              <div class="payment-line">
+                <span class="muted">Karta raqam:</span>
+                <strong id="cardNumber">-</strong>
+              </div>
+              <div class="payment-line">
+                <span class="muted">Bank:</span>
+                <strong id="bankName">-</strong>
+              </div>
+            </div>
+            <div class="faq-item glass mt-3">
+              <h6>To'lov tartibi</h6>
+              <ul class="list-clean mb-0">
+                <li>1. Loyiha va sonni tanlang.</li>
+                <li>2. Umumiy summani o'tkazing.</li>
+                <li>3. Screenshotni yuklab yuboring.</li>
+                <li>4. Admin tasdiqidan keyin holat yangilanadi.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-7">
+          <div class="card-glass glass h-100">
+            <h5 class="mb-3">Oldindan to'lov formasi</h5>
+            <form id="preorderForm" enctype="multipart/form-data">
+              <div class="mb-2">
+                <label class="form-label">Loyiha</label>
+                <select class="form-select" name="productId" id="preorderProductId" required></select>
+              </div>
+              <div class="row g-2">
+                <div class="col-md-6 mb-2">
+                  <label class="form-label">Soni</label>
+                  <input class="form-control" type="number" name="quantity" id="preorderQuantity" min="1" value="1" required />
+                </div>
+                <div class="col-md-6 mb-2">
+                  <label class="form-label">Hisoblangan summa</label>
+                  <div id="calcTotal" class="calc-total">0 so'm</div>
+                </div>
+              </div>
+              <div class="mb-2">
+                <label class="form-label">To'lovchi F.I.Sh</label>
+                <input class="form-control" type="text" name="payerFullName" id="payerFullName" required />
+              </div>
+              <div class="mb-2">
+                <label class="form-label">Tranzaksiya ID</label>
+                <input class="form-control" type="text" name="transactionId" placeholder="Masalan: TXN-2026-001" required />
+              </div>
+              <div class="mb-2">
+                <label class="form-label">Izoh (ixtiyoriy)</label>
+                <textarea class="form-control" name="note" rows="2" placeholder="To'lov va buyurtma bo'yicha qisqa izoh"></textarea>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">To'lov screenshot</label>
+                <input class="form-control" type="file" name="paymentScreenshot" accept="image/*" required />
+              </div>
+              <div id="preorderError" class="text-danger small mb-2"></div>
+              <div id="preorderOk" class="text-success small mb-2"></div>
+              <button class="btn btn-solid w-100" type="submit">To'lov arizasini yuborish</button>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-gap fade-up">
+        <h2 class="section-title">Mening oldindan to'lovlarim</h2>
+        <div class="card-glass glass">
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Sana</th>
+                  <th>Loyiha</th>
+                  <th>Soni</th>
+                  <th>Summa</th>
+                  <th>Status</th>
+                  <th>Dalil</th>
+                  <th>Admin izoh</th>
+                </tr>
+              </thead>
+              <tbody id="myPreordersBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <footer class="footer glass">Oldindan to'lov: screenshot asosida admin tasdiqlash oqimi.</footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/main.js"></script>
+    <script src="/assets/preorder.js"></script>
+  </body>
+</html>

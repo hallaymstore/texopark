@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="uz">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HALLAYM TEXNOPARK | Admin Panel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/assets/style.css" />
+  </head>
+  <body>
+    <div class="site-shell">
+      <nav class="navbar navbar-expand-xl glass navbar-glass fade-up">
+        <div class="container-fluid">
+          <a class="navbar-brand d-flex align-items-center gap-2" href="/">
+            <span class="brand-dot"></span>
+            <span>HALLAYM TEXNOPARK</span>
+          </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="mainNav">
+            <ul class="navbar-nav me-auto mb-2 mb-xl-0">
+              <li class="nav-item"><a class="nav-link" href="/home">Bosh sahifa</a></li>
+              <li class="nav-item"><a class="nav-link" href="/products">Loyihalar</a></li>
+              <li class="nav-item"><a class="nav-link" href="/order">Ariza</a></li>
+              <li class="nav-item"><a class="nav-link" href="/preorder">Oldindan to'lov</a></li>
+              <li class="nav-item"><a class="nav-link" href="/news">Yangiliklar</a></li>
+              <li class="nav-item"><a class="nav-link" href="/blog">Blog</a></li>
+              <li class="nav-item"><a class="nav-link" href="/gallery">Galereya</a></li>
+              <li class="nav-item hidden" data-admin-only><a class="nav-link text-warning" href="/admin">Admin</a></li>
+            </ul>
+            <div class="nav-actions d-flex align-items-center gap-2">
+              <span id="userLabel" class="small muted"></span>
+              <a href="/login" class="btn btn-sm btn-glass hidden" data-guest-only>Kirish</a>
+              <button class="btn btn-sm btn-solid hidden" data-auth-only data-logout-btn>Chiqish</button>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      <section id="adminGate" class="hero glass hidden section-gap fade-up">
+        <h1>Admin ruxsati kerak</h1>
+        <p>Ushbu bo'limga faqat admin roli bilan kirish mumkin.</p>
+        <a class="btn btn-solid" href="/login?next=/admin">Admin sifatida kirish</a>
+      </section>
+
+      <section id="adminDashboard" class="hidden">
+        <div class="hero glass section-gap fade-up">
+          <span class="chip-lite mb-2">Control Center</span>
+          <h1>Boshqaruv paneli</h1>
+          <p>Loyihalar, yangiliklar, blog, galereya va oldindan to'lov arizalarini bir joydan boshqaring.</p>
+        </div>
+
+        <section class="row g-3 section-gap fade-up">
+          <div class="col-6 col-md-3">
+            <div class="stat-box glass h-100">
+              <div class="stat-value">Products</div>
+              <div class="stat-label">Loyiha kartalari</div>
+            </div>
+          </div>
+          <div class="col-6 col-md-3">
+            <div class="stat-box glass h-100">
+              <div class="stat-value">News</div>
+              <div class="stat-label">Rasmiy yangiliklar</div>
+            </div>
+          </div>
+          <div class="col-6 col-md-3">
+            <div class="stat-box glass h-100">
+              <div class="stat-value">Gallery</div>
+              <div class="stat-label">Bajarilgan ishlar</div>
+            </div>
+          </div>
+          <div class="col-6 col-md-3">
+            <div class="stat-box glass h-100">
+              <div class="stat-value">Preorder</div>
+              <div class="stat-label">To'lov tasdiqlash</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="row g-3 section-gap fade-up">
+          <div class="col-lg-5">
+            <div class="card-glass glass h-100">
+              <h5 class="mb-3">Yangi loyiha qo'shish</h5>
+              <form id="productCreateForm" enctype="multipart/form-data">
+                <div class="mb-2">
+                  <label class="form-label">Nomi</label>
+                  <input class="form-control" type="text" name="name" required />
+                </div>
+                <div class="mb-2">
+                  <label class="form-label">Tavsifi</label>
+                  <textarea class="form-control" name="description" rows="4" required></textarea>
+                </div>
+                <div class="mb-2">
+                  <label class="form-label">Narxi (so'm)</label>
+                  <input class="form-control" type="number" name="price" min="0" required />
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Rasmlar (max 5 ta)</label>
+                  <input class="form-control" type="file" id="images" accept="image/*" multiple />
+                </div>
+                <div id="productError" class="text-danger small mb-2"></div>
+                <div id="productOk" class="text-success small mb-2"></div>
+                <button class="btn btn-solid w-100" type="submit">Saqlash</button>
+              </form>
+            </div>
+          </div>
+          <div class="col-lg-7">
+            <div class="card-glass glass h-100">
+              <h5 class="mb-3">Loyihalar ro'yxati</h5>
+              <div class="table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Nomi</th>
+                      <th>Narx</th>
+                      <th>Rasmlar</th>
+                      <th>Amal</th>
+                    </tr>
+                  </thead>
+                  <tbody id="adminProductsBody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section-gap fade-up">
+          <div class="card-glass glass mb-3">
+            <h5 class="mb-2">Arizalar boshqaruvi</h5>
+            <p class="muted mb-0">Loyiha arizalarini qabul qiling yoki rad eting.</p>
+          </div>
+          <div class="card-glass glass">
+            <div id="adminOrdersWrap"></div>
+          </div>
+        </section>
+
+        <section class="row g-3 section-gap fade-up">
+          <div class="col-lg-5">
+            <div class="card-glass glass h-100">
+              <h5 class="mb-3">Yangilik qo'shish</h5>
+              <form id="newsCreateForm" enctype="multipart/form-data">
+                <div class="mb-2">
+                  <label class="form-label">Sarlavha</label>
+                  <input class="form-control" type="text" name="title" required />
+                </div>
+                <div class="mb-2">
+                  <label class="form-label">Qisqa matn</label>
+                  <textarea class="form-control" name="excerpt" rows="2" required></textarea>
+                </div>
+                <div class="mb-2">
+                  <label class="form-label">To'liq matn</label>
+                  <textarea class="form-control" name="content" rows="4" required></textarea>
+                </div>
+                <div class="mb-2 form-check">
+                  <input class="form-check-input" type="checkbox" value="true" id="isPinned" name="isPinned" />
+                  <label class="form-check-label" for="isPinned">Pin (yuqorida ko'rsatish)</label>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Muqova rasmi</label>
+                  <input class="form-control" type="file" name="coverImage" accept="image/*" />
+                </div>
+                <div id="newsError" class="text-danger small mb-2"></div>
+                <div id="newsOk" class="text-success small mb-2"></div>
+                <button class="btn btn-solid w-100" type="submit">Yangilikni saqlash</button>
+              </form>
+            </div>
+          </div>
+          <div class="col-lg-7">
+            <div class="card-glass glass h-100">
+              <h5 class="mb-3">Yangiliklar</h5>
+              <div class="table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Sarlavha</th>
+                      <th>Sana</th>
+                      <th>Pin</th>
+                      <th>Amal</th>
+                    </tr>
+                  </thead>
+                  <tbody id="adminNewsBody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="row g-3 section-gap fade-up">
+          <div class="col-lg-5">
+            <div class="card-glass glass h-100">
+              <h5 class="mb-3">Blog post qo'shish</h5>
+              <form id="blogCreateForm" enctype="multipart/form-data">
+                <div class="mb-2">
+                  <label class="form-label">Sarlavha</label>
+                  <input class="form-control" type="text" name="title" required />
+                </div>
+                <div class="mb-2">
+                  <label class="form-label">Muallif</label>
+                  <input class="form-control" type="text" name="author" placeholder="Matbuot xizmati" />
+                </div>
+                <div class="mb-2">
+                  <label class="form-label">Qisqa matn</label>
+                  <textarea class="form-control" name="excerpt" rows="2" required></textarea>
+                </div>
+                <div class="mb-2">
+                  <label class="form-label">To'liq matn</label>
+                  <textarea class="form-control" name="content" rows="4" required></textarea>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Muqova rasmi</label>
+                  <input class="form-control" type="file" name="coverImage" accept="image/*" />
+                </div>
+                <div id="blogError" class="text-danger small mb-2"></div>
+                <div id="blogOk" class="text-success small mb-2"></div>
+                <button class="btn btn-solid w-100" type="submit">Blogni saqlash</button>
+              </form>
+            </div>
+          </div>
+          <div class="col-lg-7">
+            <div class="card-glass glass h-100">
+              <h5 class="mb-3">Blog postlar</h5>
+              <div class="table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Sarlavha</th>
+                      <th>Muallif</th>
+                      <th>Sana</th>
+                      <th>Amal</th>
+                    </tr>
+                  </thead>
+                  <tbody id="adminBlogBody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="row g-3 section-gap fade-up">
+          <div class="col-lg-5">
+            <div class="card-glass glass h-100">
+              <h5 class="mb-3">Galereya materiali qo'shish</h5>
+              <form id="galleryCreateForm" enctype="multipart/form-data">
+                <div class="mb-2">
+                  <label class="form-label">Nomi</label>
+                  <input class="form-control" type="text" name="title" required />
+                </div>
+                <div class="mb-2">
+                  <label class="form-label">Kategoriya</label>
+                  <input class="form-control" type="text" name="category" placeholder="Startup yarmarkasi" />
+                </div>
+                <div class="mb-2">
+                  <label class="form-label">Yakunlangan sana</label>
+                  <input class="form-control" type="date" name="completedAt" />
+                </div>
+                <div class="mb-2">
+                  <label class="form-label">Tavsif</label>
+                  <textarea class="form-control" name="description" rows="3" required></textarea>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Rasmlar (1-8 ta)</label>
+                  <input class="form-control" type="file" id="galleryImages" accept="image/*" multiple required />
+                </div>
+                <div id="galleryError" class="text-danger small mb-2"></div>
+                <div id="galleryOk" class="text-success small mb-2"></div>
+                <button class="btn btn-solid w-100" type="submit">Galereyani saqlash</button>
+              </form>
+            </div>
+          </div>
+          <div class="col-lg-7">
+            <div class="card-glass glass h-100">
+              <h5 class="mb-3">Galereya ro'yxati</h5>
+              <div class="table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Nomi</th>
+                      <th>Kategoriya</th>
+                      <th>Rasmlar</th>
+                      <th>Sana</th>
+                      <th>Amal</th>
+                    </tr>
+                  </thead>
+                  <tbody id="adminGalleryBody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section-gap fade-up">
+          <div class="card-glass glass mb-3">
+            <h5 class="mb-2">Oldindan to'lov arizalari</h5>
+            <p class="muted mb-0">To'lov screenshotlarni tekshirib tasdiqlang yoki rad eting.</p>
+          </div>
+          <div class="card-glass glass">
+            <div id="adminPreordersWrap"></div>
+          </div>
+        </section>
+
+        <section class="card-glass glass section-gap fade-up">
+          <h5 class="mb-2">Operator checklist</h5>
+          <ul class="list-clean">
+            <li>Yuklangan rasm va matnning rasmiy uslubga mosligini tekshiring.</li>
+            <li>To'lov screenshotida summa va tranzaksiya identifikatori aniq bo'lishi kerak.</li>
+            <li>Qaror berganda qisqa admin izoh qoldirish tavsiya etiladi.</li>
+            <li>Shubhali holatlarda foydalanuvchi bilan qayta aloqa qiling.</li>
+          </ul>
+        </section>
+      </section>
+
+      <footer class="footer glass">Admin panel: kontent + ariza + to'lov tasdiqlash markazi.</footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/main.js"></script>
+    <script src="/assets/admin.js"></script>
+  </body>
+</html>
